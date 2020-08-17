@@ -62,15 +62,15 @@ namespace EzraTest.DB
                 }
                 connection.Close();
             }
-         
+
         }
 
         /// <inheritdoc />
         public void UpdateMember(Guid id, Member member)
         {
+            // TODO
             using (var connection = new SqliteConnection(_connectionString))
             {
-                // TODO
                 if (member != null)
                 {
                     connection.Open();
@@ -80,19 +80,20 @@ namespace EzraTest.DB
                 }
                 connection.Close();
             }
-
-            
-
-      
-
-
         }
 
         /// <inheritdoc />
         public void DeleteMember(Guid id)
         {
             // TODO
-            throw new NotImplementedException();
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                connection.Open();
+                var deleteCmd = connection.CreateCommand();
+                deleteCmd.CommandText = $"DELETE FROM MEMBERS WHERE Id = '{id}' ";
+                deleteCmd.ExecuteNonQuery();
+                connection.Close();
+            }
         }
 
         private IEnumerable<T> ExecuteQuery<T>(string commandText, Func<SqliteDataReader, T> func)
